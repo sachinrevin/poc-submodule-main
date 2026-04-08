@@ -1,6 +1,6 @@
 # poc-submodule-main
 
-This repository is a container project that references the three NestJS services as Git submodules.
+This repository is a container project that references the three NestJS services as Git submodules and exposes them through a single reverse-proxy port.
 
 ## Structure
 
@@ -28,25 +28,35 @@ From the root of `poc-submodule-main`:
 docker compose up
 ```
 
-This starts all three NestJS services simultaneously from their submodule directories.
+This starts all three NestJS services simultaneously from their submodule directories and serves them through a single gateway port.
 
-Ports:
+Single public port:
 
-- `project1` runs on `3001`
-- `project2` runs on `3002`
-- `project3` runs on `3003`
+- gateway runs on `4545`
 
 Endpoints:
 
-- `project1` -> `http://localhost:3001/project1/api/v1/health`
-- `project2` -> `http://localhost:3002/project2/api/v1/health`
-- `project3` -> `http://localhost:3003/project3/api/v1/health`
+- `project1` -> `http://localhost:4545/project1/api/v1/health`
+- `project2` -> `http://localhost:4545/project2/api/v1/health`
+- `project3` -> `http://localhost:4545/project3/api/v1/health`
+
+The three application containers still listen internally on `3001`, `3002`, and `3003`, but those ports are not exposed on the host.
 
 Environment files are managed centrally in the main repository:
 
 - `env/project1.env`
 - `env/project2.env`
 - `env/project3.env`
+
+## Branch Strategy
+
+The main repository tracks the `unifying` branch for each submodule in `.gitmodules`.
+
+To refresh submodules from that branch later:
+
+```bash
+git submodule update --remote --merge
+```
 
 Stop everything with:
 

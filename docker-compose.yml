@@ -5,8 +5,8 @@ services:
     command: sh -c "npm install && npm run start"
     env_file:
       - ./env/project1.env
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     volumes:
       - ./services/project1:/app
       - project1_node_modules:/app/node_modules
@@ -17,8 +17,8 @@ services:
     command: sh -c "npm install && npm run start"
     env_file:
       - ./env/project2.env
-    ports:
-      - "3002:3002"
+    expose:
+      - "3002"
     volumes:
       - ./services/project2:/app
       - project2_node_modules:/app/node_modules
@@ -29,11 +29,22 @@ services:
     command: sh -c "npm install && npm run start"
     env_file:
       - ./env/project3.env
-    ports:
-      - "3003:3003"
+    expose:
+      - "3003"
     volumes:
       - ./services/project3:/app
       - project3_node_modules:/app/node_modules
+
+  gateway:
+    image: nginx:1.27-alpine
+    depends_on:
+      - project1
+      - project2
+      - project3
+    ports:
+      - "4545:4545"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   project1_node_modules:
