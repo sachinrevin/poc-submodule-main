@@ -1,0 +1,41 @@
+services:
+  project1:
+    image: node:24-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run start"
+    env_file:
+      - ./env/project1.env
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./services/project1:/app
+      - project1_node_modules:/app/node_modules
+
+  project2:
+    image: node:24-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run start"
+    env_file:
+      - ./env/project2.env
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./services/project2:/app
+      - project2_node_modules:/app/node_modules
+
+  project3:
+    image: node:24-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run start"
+    env_file:
+      - ./env/project3.env
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./services/project3:/app
+      - project3_node_modules:/app/node_modules
+
+volumes:
+  project1_node_modules:
+  project2_node_modules:
+  project3_node_modules:

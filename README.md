@@ -20,6 +20,40 @@ git clone --recurse-submodules https://github.com/sachinrevin/poc-submodule-main
 git submodule update --init --recursive
 ```
 
+## Run All Services With Docker Compose
+
+From the root of `poc-submodule-main`:
+
+```bash
+docker compose up
+```
+
+This starts all three NestJS services simultaneously from their submodule directories.
+
+Ports:
+
+- `project1` runs on `3001`
+- `project2` runs on `3002`
+- `project3` runs on `3003`
+
+Endpoints:
+
+- `project1` -> `http://localhost:3001/project1/api/v1/health`
+- `project2` -> `http://localhost:3002/project2/api/v1/health`
+- `project3` -> `http://localhost:3003/project3/api/v1/health`
+
+Environment files are managed centrally in the main repository:
+
+- `env/project1.env`
+- `env/project2.env`
+- `env/project3.env`
+
+Stop everything with:
+
+```bash
+docker compose down
+```
+
 ## Run Services Independently
 
 Each service is isolated and should be started from its own submodule directory.
